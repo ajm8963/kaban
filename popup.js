@@ -75,7 +75,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     })
                         .then(res => {
                             console.log("Ответ сервера, статус:", res.status);
-                            return res.json();
+                            return res;
                         })
                         .then(data => {
                             console.log("Успешный ответ сервера:", data);

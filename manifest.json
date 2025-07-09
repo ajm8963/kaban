@@ -7,10 +7,7 @@
     "activeTab",
     "scripting",
     "downloads",
-    "<all_urls>",
-    "webRequest",
-    "http://localhost:8080/*",
-    "https://mail.yandex.ru/*"
+    "webRequest"
   ],
   "action": {
     "default_popup": "popup.html"
