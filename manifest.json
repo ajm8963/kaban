@@ -1,0 +1,19 @@
+{
+  "manifest_version": 3,
+  "name": "Yandex Mail EML Downloader",
+  "version": "1.0",
+  "description": "Скачивает письма из Яндекс.Почты в формате .eml",
+  "permissions": [
+    "activeTab",
+    "scripting",
+    "downloads",
+    "<all_urls>",
+    "webRequest",
+    "http://localhost:8080/*",
+    "https://mail.yandex.ru/*"
+  ],
+  "action": {
+    "default_popup": "popup.html"
+
+  }
+}
