@@ -54,7 +54,9 @@ document.addEventListener('DOMContentLoaded', () => {
                     const senderEmail = emailMatch ? emailMatch[1] : "unknown@example.com";
                     console.log("Извлечен email отправителя:", senderEmail);
                     const referencesMatch = emailText.match(/^References:\s*(.+)/mi);
-                    const references = referencesMatch ? referencesMatch[1].trim() : null;
+                    const references = referencesMatch
+                        ? referencesMatch[1].trim().replace(/\s+/g, ', ')
+                        : null;
                     console.log("References:", references);
                     const messageIdMatch = emailText.match(/^Message-ID:\s*<([^>]+)>/mi);
                     const messageId = messageIdMatch ? messageIdMatch[1] : null;
