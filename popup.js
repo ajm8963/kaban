@@ -53,8 +53,19 @@ document.addEventListener('DOMContentLoaded', () => {
                     const emailMatch = emailText.match(/^From:.*<([^>]+)>/mi) || emailText.match(/^From:\s*([^\s<]+)/mi);
                     const senderEmail = emailMatch ? emailMatch[1] : "unknown@example.com";
                     console.log("Извлечен email отправителя:", senderEmail);
+                    const referencesMatch = emailText.match(/^References:\s*(.+)/mi);
+                    const references = referencesMatch ? referencesMatch[1].trim() : null;
+                    console.log("References:", references);
+                    const messageIdMatch = emailText.match(/^Message-ID:\s*<([^>]+)>/mi);
+                    const messageId = messageIdMatch ? messageIdMatch[1] : null;
+                    console.log("Id письма: ", messageId);
 
                     const formData = new FormData();
+                    formData.append("messageId", messageId)
+                    if (references) {
+                        formData.append("references", references);
+
+                    }
                     formData.append("uid", uid);
                     formData.append("email", senderEmail);
                     formData.append("document", file);
