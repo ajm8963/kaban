@@ -1,16 +1,41 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="utf-8">
-    <title>Яндекс.Почта - Скачать письмо</title>
+    <meta charset="UTF-8">
     <style>
-        body { width: 300px; padding: 10px; }
-        #status { margin-top: 10px; }
+        .loading-dots {
+            display: none;
+            margin-top: 10px;
+        }
+        .dot {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: #4285f4;
+            margin: 0 2px;
+            animation: bounce 1s infinite ease-in-out;
+        }
+        .dot:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+        .dot:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+        }
     </style>
 </head>
 <body>
 <button id="downloadBtn">Скачать письмо</button>
-<div id="status"></div>
+<div class="loading-dots" id="loadingDots">
+    <span class="dot"></span>
+    <span class="dot"></span>
+    <span class="dot"></span>
+</div>
+<div id="statusText"></div>
 <script src="popup.js"></script>
 </body>
 </html>

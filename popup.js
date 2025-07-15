@@ -1,5 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
     document.getElementById("downloadBtn").addEventListener("click", async () => {
+        const loadingDots = document.getElementById("loadingDots");
+        const statusText = document.getElementById("statusText");
         console.log("Кнопка нажата - начало обработки");
 
         const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
@@ -7,7 +9,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (!tab.url || !tab.url.includes("mail.yandex.ru")) {
             console.error("Не Яндекс.Почта");
-            alert("Откройте страницу письма в Яндекс.Почте");
             return;
         }
 
@@ -21,13 +22,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (!uid || !messageId) {
             console.error("Не удалось извлечь параметры");
-            alert("Не удалось определить UID или ID письма");
             return;
         }
+
+
 
         const emlUrl = `https://mail.yandex.ru/web-api/message-source/liza1/${uid}/${messageId}/yandex_email.eml`;
         console.log("Формируем URL .eml:", emlUrl);
 
+
+
+        // Показываем анимацию
+        loadingDots.style.display = "block";
+        statusText.textContent = "Загрузка данных...";
         fetch(emlUrl)
             .then(response => {
                 console.log("Получен ответ от Яндекс.Почты, статус:", response.status);
@@ -59,11 +66,11 @@ document.addEventListener('DOMContentLoaded', () => {
                         : null;
                     console.log("References:", references);
                     const messageIdMatch = emailText.match(/^Message-ID:\s*<([^>]+)>/mi);
-                    const messageId = messageIdMatch ? messageIdMatch[1] : null;
-                    console.log("Id письма: ", messageId);
+                    const messageIdMail = messageIdMatch ? messageIdMatch[1] : null;
+                    console.log("Id письма: ", messageIdMail);
 
                     const formData = new FormData();
-                    formData.append("messageId", messageId)
+                    formData.append("messageId", messageIdMail)
                     if (references) {
                         formData.append("references", references);
 
@@ -92,11 +99,14 @@ document.addEventListener('DOMContentLoaded', () => {
                         })
                         .then(data => {
                             console.log("Успешный ответ сервера:", data);
-                            alert("Файл успешно загружен!");
+
+                            statusText.textContent = "✅";
+                            loadingDots.style.display = "none";
                         })
                         .catch(err => {
                             console.error("Ошибка при отправке:", err);
-                            alert("Ошибка при отправке файла: " + err.message);
+                            statusText.textContent = `❌`;
+                            loadingDots.style.display = "none";
                         });
                 };
 
@@ -108,7 +118,6 @@ document.addEventListener('DOMContentLoaded', () => {
             })
             .catch(err => {
                 console.error("Ошибка в цепочке обработки:", err);
-                alert("Ошибка: " + err.message);
             });
     });
 });
